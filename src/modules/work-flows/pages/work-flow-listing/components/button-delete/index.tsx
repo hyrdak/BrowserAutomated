@@ -23,7 +23,7 @@ const ButtonDelete = ({ data }: Props) => {
                     onSuccess: (response: any) => {
                         if (response.success) {
                             queryClient.invalidateQueries({
-                                 queryKey: [QUERY_KEYS.WORKFLOWS]
+                                queryKey: [QUERY_KEYS.WORKFLOWS]
                             });
                         }
                     }

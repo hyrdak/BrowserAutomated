@@ -1,6 +1,6 @@
 
 export interface RequestUpdatePasswordBody {
-  email: string
+  // email: string
   password: string
   token: string
   data?:{

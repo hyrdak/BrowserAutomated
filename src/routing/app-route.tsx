@@ -9,6 +9,7 @@ import {
     Routes
 } from 'react-router-dom';
 import { ROUTE_PATHS } from 'constants-es';
+import { useAppSelector } from 'libs/redux';
 
 import { useAuth } from 'data/store/auth/use-auth';
 import ForgotPassword from 'modules/auth/pages/forgot-password';
@@ -28,7 +29,7 @@ import PrivateRoute from './private-route';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useAuth();
-
+    const { user, isFetched } = useAppSelector((state) => state.auth);
     const router = createBrowserRouter(
         createRoutesFromElements(
             isAuthenticated ? (
@@ -39,8 +40,14 @@ const AppRoutes = () => {
                         </PrivateLayout>
                     }
                 >
+                    {   
+                        isFetched ? (
+                            <Route index path={ROUTE_PATHS.WORK_FLOWS} element={<WorkflowListingRoot id={user?.id} />} />
+                        ) : (
+                            <Route index path={ROUTE_PATHS.WORK_FLOWS}/>
+                        )
+                    }
                     <Route path={'*'} element={<Navigate to={ROUTE_PATHS.WORK_FLOWS} />} />
-                    <Route index path={ROUTE_PATHS.WORK_FLOWS} element={<WorkflowListingRoot />} />
                     <Route path={ROUTE_PATHS.WORK_FLOWS_DETAIL} element={<WorkflowDetail />} />
                     <Route path={ROUTE_PATHS.NODES} element={<NodeListingRoot />} />
                     <Route path={ROUTE_PATHS.KINDS} element={<KindListingRoot />} />

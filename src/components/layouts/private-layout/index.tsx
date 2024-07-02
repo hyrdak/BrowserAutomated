@@ -105,26 +105,26 @@ const PrivateLayout = ({ children }: Props) => {
                                 'justify-center': collapsed,
                                 'justify-between': !collapsed
                             })}
-                            onClick={handleLogout}
                         >
                             {' '}
-                            <div className="flex items-end">
+                            <div className="flex items-end ml-2">
                                 {' '}
                                 <Avatar
                                     size={32}
                                     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                                 ></Avatar>{' '}
                                 <span
-                                    title={user?.email}
-                                    className={cx('truncate w-3/4 inline-block', {
+                                    title={user?.userMetadata.fullName}
+                                    className={cx('truncate w-3/4 inline-block mb-1 ml-1', {
                                         hidden: !!collapsed,
                                         'ml-3s': !collapsed
                                     })}
                                 >
-                                    {user?.email}
+                                    {user?.userMetadata.fullName}
                                 </span>
                             </div>
                             <span
+                                onClick={handleLogout}
                                 title="logout"
                                 className={cx(' hover:cursor-pointer', {
                                     hidden: !!collapsed,

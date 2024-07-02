@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from 'react-rout
 import { ROUTE_PATHS } from 'constants-es';
 import { useAppDispatch } from 'libs/redux';
 
+import { LockOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message } from 'antd';
 
 import { setAuth } from 'helpers/auth';
@@ -21,24 +22,27 @@ const RecoveryPassword = () => {
     // const { data, isFetched } = useQueryCheckToken({ token: params.token as string });
     const hash = location.hash;
     const tokenRecovery = new URLSearchParams(hash.slice(1)).get('access_token');
-
-    const handleFinish = ({ email, password }: any) => {
-        mutationRequestUpdatePassword.mutate(
-            { email, password, token: tokenRecovery as string },
-            {
-                onSuccess: (response) => {
-                    if (response.success) {
-                        message.success('Update password success');
-                        navigation(ROUTE_PATHS.SIGN_IN);
-                    } else {
-                        message.error(response.message);
+    console.log(tokenRecovery);
+    
+    const handleFinish = ({ password, confirm_password }: any) => {
+        if (password === confirm_password) {
+            mutationRequestUpdatePassword.mutate(
+                { password, token: tokenRecovery as string },
+                {
+                    onSuccess: (response) => {
+                        if (response.success) {
+                            message.success('Update password success');
+                            navigation(ROUTE_PATHS.SIGN_IN);
+                        } else {
+                            message.error(response.message);
+                        }
+                    },
+                    onError: (error: any) => {
+                        message.error(error.message);
                     }
-                },
-                onError: (error: any) => {
-                    message.error(error.message);
                 }
-            }
-        );
+            );
+        }
     };
 
     if (!tokenRecovery) {
@@ -62,22 +66,6 @@ const RecoveryPassword = () => {
                 </div>
                 <Form className="flex flex-col text-sm rounded-md" onFinish={handleFinish}>
                     <Form.Item
-                        name={'email'}
-                        rules={[
-                            {
-                                required: true,
-                                whitespace: true,
-                                message: 'Please input your email!'
-                            },
-                            {
-                                type: 'email',
-                                message: 'The input is not valid E-mail!'
-                            }
-                        ]}
-                    >
-                        <Input size="large" placeholder="Email" />
-                    </Form.Item>
-                    <Form.Item
                         name={'password'}
                         rules={[
                             {
@@ -87,12 +75,25 @@ const RecoveryPassword = () => {
                             }
                         ]}
                     >
-                        <Input size="large" type="password" placeholder="Password" />
+                        <Input.Password size="large" type="password" placeholder="Password" />
+                    </Form.Item>
+                    <Form.Item
+                        className='mt-3'
+                        name={'confirm_password'}
+                        rules={[
+                            {
+                                required: true,
+                                whitespace: true,
+                                message: 'Please input confirm password!'
+                            }
+                        ]}
+                    >
+                        <Input.Password size="large" type="password" placeholder="Confirm Password" />
                     </Form.Item>
                     <Button
                         loading={mutationRequestUpdatePassword.isPending}
                         type="primary"
-                        className="w-full p-2 mt-5 "
+                        className="w-full p-2 mt-3 "
                         htmlType="submit"
                         size="large"
                     >

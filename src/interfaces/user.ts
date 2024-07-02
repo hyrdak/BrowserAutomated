@@ -35,6 +35,11 @@ export interface User {
   }
   
   interface UserMetadata {
+    email: string;
+    emailVerified: boolean;
+    fullName: string;
+    phoneVerified: boolean;
+    sub: string;
   }
   
   interface AppMetadata {
