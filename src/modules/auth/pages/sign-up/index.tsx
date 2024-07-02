@@ -51,11 +51,11 @@ const SignUp = () => {
                             {
                                 required: true,
                                 whitespace: true,
-                                message: 'Please input your name!'
+                                message: 'Please input display name!'
                             }
                         ]}
                     >
-                        <Input size="large" type="Name" placeholder="Name" />
+                        <Input size="large" type="Name" placeholder="Display Name" />
                     </Form.Item>
                     <Form.Item
                         name={'email'}
@@ -81,7 +81,18 @@ const SignUp = () => {
                     >
                         <Input size="large" type="password" placeholder="Password" />
                     </Form.Item>
-
+                    <Form.Item
+                        name={'confirm_password'}
+                        rules={[
+                            {
+                                required: true,
+                                whitespace: true,
+                                message: 'Please input confirm password!'
+                            }
+                        ]}
+                    >
+                        <Input size="large" type="password" placeholder="Confirm Password" />
+                    </Form.Item>
                     <Button
                         loading={mutationRequestRegister.isPending}
                         type="primary"
